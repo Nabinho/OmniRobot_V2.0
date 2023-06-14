@@ -667,7 +667,7 @@ void loop()
         vertical = map(controller.Y2axis_reading, 550, 1023, speed_min, speed_max);
         if (controller.X1axis_reading > 550)
         {
-          horizontal = map(controller.X1axis_reading, 550, 1023, speed_max, speed_min);
+          horizontal = map(controller.X1axis_reading, 550, 1023, speed_max, speed_max / 4);
           difference = abs(vertical - horizontal);
           sum = vertical + difference;
           sub = vertical - difference;
@@ -693,7 +693,7 @@ void loop()
         }
         else if (controller.X1axis_reading < 500)
         {
-          horizontal = map(controller.X1axis_reading, 500, 0, speed_max, speed_min);
+          horizontal = map(controller.X1axis_reading, 500, 0, speed_max, speed_max / 4);
           difference = abs(vertical - horizontal);
           sum = vertical + difference;
           sub = vertical - difference;
@@ -738,7 +738,7 @@ void loop()
         vertical = map(controller.Y2axis_reading, 500, 0, speed_min, speed_max);
         if (controller.X1axis_reading > 550)
         {
-          horizontal = map(controller.X1axis_reading, 550, 1023, speed_max, speed_min);
+          horizontal = map(controller.X1axis_reading, 550, 1023, speed_max, speed_max / 4);
           difference = abs(vertical - horizontal);
           sum = vertical + difference;
           sub = vertical - difference;
@@ -764,7 +764,7 @@ void loop()
         }
         else if (controller.X1axis_reading < 500)
         {
-          horizontal = map(controller.X1axis_reading, 500, 0, speed_max, speed_min);
+          horizontal = map(controller.X1axis_reading, 500, 0, speed_max, speed_max / 4);
           difference = abs(vertical - horizontal);
           sum = vertical + difference;
           sub = vertical - difference;
@@ -856,7 +856,7 @@ void loop()
 
       //********************************************************************************************************************
       // Checks if Joystick is Heading Forward
-      else if (controller.Y1axis_reading > 550 && !mode)
+      else if (controller.Y1axis_reading > 550 && mode)
       {
         vertical = map(controller.Y1axis_reading, 550, 1023, speed_min, speed_max);
         if (controller.X2axis_reading > 550)
@@ -901,7 +901,7 @@ void loop()
 
       //********************************************************************************************************************
       // Checks if Joystick is Heading Backward
-      else if (controller.Y1axis_reading < 500 && !mode)
+      else if (controller.Y1axis_reading < 500 && mode)
       {
         vertical = map(controller.Y1axis_reading, 500, 0, speed_min, speed_max);
         if (controller.X2axis_reading > 550)
