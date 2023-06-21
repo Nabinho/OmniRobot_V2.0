@@ -9,7 +9,6 @@
  *
  *  Hardware Reference:
  *    - Keyestudio 4 Channel L928P Motor Shield - https://wiki.keyestudio.com/KS0448_Keyestudio_L298P_4-Channel_Motor_Drive_Shield
- *    - DFRobot BLUno ATmega328P BLE 4.0 - https://wiki.dfrobot.com/Bluno_SKU_DFR0267
  *
  **********************************************************************************************************************/
 
@@ -624,11 +623,11 @@ void loop()
           button5_state = reading_button5;
           if (button5_state == 1)
           {
-            tone(PIN_BUZZER, FREQUENCY);
+            digitalWrite(PIN_BUZZER, HIGH);
           }
           else
           {
-            noTone(PIN_BUZZER);
+            digitalWrite(PIN_BUZZER, LOW);
           }
         }
       }
