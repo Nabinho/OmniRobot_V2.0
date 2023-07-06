@@ -13,7 +13,7 @@
  **********************************************************************************************************************/
 
 // Debug Macro
-// #define DEBUG
+ #define DEBUG
 
 // Libraries
 #include <SPI.h>
@@ -471,7 +471,7 @@ void setup()
 
   // Buzzer Pin Initialization
   pinMode(PIN_BUZZER, OUTPUT);
-  noTone(PIN_BUZZER);
+  digitalWrite(PIN_BUZZER, LOW);
 
   // Battery Input Initialization
   pinMode(PIN_BAT, INPUT);
@@ -623,11 +623,11 @@ void loop()
           button5_state = reading_button5;
           if (button5_state == 1)
           {
-            digitalWrite(PIN_BUZZER, HIGH);
+            digitalWrite(PIN_BUZZER, LOW);
           }
           else
           {
-            digitalWrite(PIN_BUZZER, LOW);
+            digitalWrite(PIN_BUZZER, HIGH);
           }
         }
       }
@@ -1006,6 +1006,7 @@ void loop()
       drive_front_right(stop_speed, 0);
       drive_back_left(stop_speed, 0);
       drive_back_right(stop_speed, 0);
+      digitalWrite(PIN_BUZZER, LOW);
       digitalWrite(LED_BUILTIN, HIGH);
 #ifdef DEBUG
       Serial.println("FAILSAFE!!!");
@@ -1026,7 +1027,7 @@ void loop()
     drive_back_left(stop_speed, 0);
     drive_back_right(stop_speed, 0);
     digitalWrite(LED_BUILTIN, HIGH);
-    tone(PIN_BUZZER, FREQUENCY / 2);
+    digitalWrite(PIN_BUZZER, HIGH);
 #ifdef DEBUG
     Serial.println("LOW BATTERY!!!");
 #endif
