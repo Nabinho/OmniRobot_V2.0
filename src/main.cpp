@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 /***********************************************************************************************************************
- * 
+ *
  * Written by Nabinho - 2023
  *
  *  Mecanum Wheel Movement Reference - https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Mecanum_wheel_control_principle.svg/600px-Mecanum_wheel_control_principle.svg.png
@@ -13,7 +13,7 @@
  **********************************************************************************************************************/
 
 // Debug Macro
- #define DEBUG
+// #define DEBUG
 
 // Libraries
 #include <SPI.h>
@@ -158,6 +158,10 @@ const uint16_t ORANGE_LIGHT[3] = {255, 175, 0};
 bool blink = true;
 unsigned long blink_time = 0;
 const uint16_t BLINK_INTERVAL = 500;
+
+// Battery reading variables
+unsigned long low_battery_time = 0;
+const uint16_t BATTERY_FAILSAFE = 500;
 
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
@@ -410,6 +414,17 @@ void setup()
   Serial.begin(9600);
 #endif
 
+  // Buzzer Pin Initialization
+  pinMode(PIN_BUZZER, OUTPUT);
+  digitalWrite(PIN_BUZZER, HIGH);
+
+  // Battery Input Initialization
+  pinMode(PIN_BAT, INPUT);
+  // Reads Battery Voltage
+  bat_reading = analogRead(PIN_BAT);
+  ADC_voltage = (bat_reading * 5.0) / 1024.0;
+  bat_voltage = ADC_voltage / (R2 / (R1 + R2));
+
   // Radio Initialization
   if (!radio.begin())
   {
@@ -469,14 +484,7 @@ void setup()
   digitalWrite(PIN_DIRD, LOW);
   analogWrite(PIN_END, 0);
 
-  // Buzzer Pin Initialization
-  pinMode(PIN_BUZZER, OUTPUT);
-  digitalWrite(PIN_BUZZER, LOW);
-
-  // Battery Input Initialization
-  pinMode(PIN_BAT, INPUT);
-
-  // BUILTIN LED Initialization
+  // LED BUILTIN Configuration
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 }
@@ -501,6 +509,9 @@ void loop()
   // Checks If Battery Is Charged
   if (bat_voltage > min_bat_voltage)
   {
+
+    // Updates Battery Timeout
+    low_battery_time = millis();
 
     // Checks If New Reading Available
     if (radio.available(&channel))
@@ -1016,7 +1027,7 @@ void loop()
 
   //********************************************************************************************************************
   // Handle the Robot if Battery is Low
-  else
+  else if ((millis() - low_battery_time) > BATTERY_FAILSAFE)
   {
     enable_blink = false;
     front_light = false;
@@ -1026,7 +1037,7 @@ void loop()
     drive_front_right(stop_speed, 0);
     drive_back_left(stop_speed, 0);
     drive_back_right(stop_speed, 0);
-    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(LED_BUILTIN, LOW);
     digitalWrite(PIN_BUZZER, HIGH);
 #ifdef DEBUG
     Serial.println("LOW BATTERY!!!");
