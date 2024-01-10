@@ -351,7 +351,6 @@ void handle_lights(bool front, bool back, bool right, bool left)
 // Functions to Drive the Motors
 void drive_back_left(uint16_t speed, bool dir)
 {
-  speed = constrain(speed, 0, 255);
   if (dir == 1)
   {
     digitalWrite(PIN_DIRA, LOW);
@@ -364,7 +363,6 @@ void drive_back_left(uint16_t speed, bool dir)
 }
 void drive_front_left(uint16_t speed, bool dir)
 {
-  speed = constrain(speed, 0, 255);
   if (dir == 1)
   {
     digitalWrite(PIN_DIRB, LOW);
@@ -377,7 +375,6 @@ void drive_front_left(uint16_t speed, bool dir)
 }
 void drive_back_right(uint16_t speed, bool dir)
 {
-  speed = constrain(speed, 0, 255);
   if (dir == 1)
   {
     digitalWrite(PIN_DIRC, LOW);
@@ -390,7 +387,6 @@ void drive_back_right(uint16_t speed, bool dir)
 }
 void drive_front_right(uint16_t speed, bool dir)
 {
-  speed = constrain(speed, 0, 255);
   if (dir == 1)
   {
     digitalWrite(PIN_DIRD, LOW);
